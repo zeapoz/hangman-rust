@@ -23,8 +23,8 @@ fn main() {
         // Print the obfuscated secret word
         print_revealed(&secret_word, &guessed);
 
+        // Get user input, in case of error try again
         println!("Please enter a valid guess: ");
-
         let mut guess = String::new();
         io::stdin()
             .read_line(&mut guess)
