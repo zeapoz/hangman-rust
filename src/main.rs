@@ -6,6 +6,8 @@ fn main() {
     // let secret_word = String::from("rust");
     let secret_word = choose_word();
     let mut guessed = Vec::new();
+    let mut guessed_str = String::new();
+    let mut lives = secret_word.len() * 3;
 
     println!("\n-----------------------");
     println!("| Welcome to Hangman! |");
@@ -15,13 +17,18 @@ fn main() {
 
     loop {
         // Check if player has won
-        if check_win(&secret_word, &guessed) {
+        if check_win(&secret_word, &guessed) && lives >= 1 {
             println!("Congratulations! The secret word was: {}", secret_word);
             break;
+        } else if lives < 1 {
+            println!("No guesses left :(");
+            break;
         }
-
         // Print the obfuscated secret word
         print_revealed(&secret_word, &guessed);
+
+        // Print remaining guesses
+        println!("You have {} guess(es) left.", lives);
 
         // Get user input, in case of error try again
         println!("Please enter a valid guess: ");
@@ -41,11 +48,11 @@ fn main() {
         }
         guessed.push(guess);
 
-        // Generate guessed characters string
-        let mut guessed_str = String::new();
-        for g in &guessed {
-            guessed_str.push(*g);
-        }
+        // Remove lives
+        lives -= 1;
+
+        // Push guessed characters to string
+        guessed_str.push(guess);
         println!("You have guessed: {}\n", guessed_str);
     }
 }
